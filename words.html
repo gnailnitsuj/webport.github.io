@@ -3,10 +3,24 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="words.css" />
+    <link rel="stylesheet" href="style.css" />
 </head>
 <title> Words </title>
 <a href="index.html"> Back to Portfolio </a>
 <h1> Words Project </h1>
+<body>
+    <select style="font-family: 'Courier New', Courier, monospace;" id="wordSelect" onchange="displayText()"> 
+        <option value=""> --Select Word-- </option>
+        <option value="Serenade" data-sentence="The farmer serenaded the herd with their trumpet."> Serenade </option>
+        <option value="Hitherto" data-sentence="The ruins hitherto still show signs of life."> Hitherto </option>
+        <option value="Lagoon" data-sentence="A lagoon as surfaced at high tide."> Lagoon </option>
+        <option value="Astrolabe" data-sentence="Astrolabes come in handy when measuring the axis of the earth."> Astrolabe </option>
+        <option value="Starboard" data-sentence="With the incoming wind hitting left, take the helm starboard."> Starboard </option>
+    </select>
+    <button style="font-family: 'Courier New', Courier, monospace;" onclick="speakWord()"> Speak Word </button> <br> <br>
+    <textarea style="width: 100px; height: 200px;" id="textDisplay" readonly></textarea> <br> <br>
+    <button style="font-family: 'Courier New', Courier, monospace;" onclick="speakSentence()"> Speak Sentence </button>
+    <script src="words.js"></script>
+</body>
 
 </html>
