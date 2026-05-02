@@ -1,0 +1,14 @@
+{
+    "name": "Bard App",
+    "short_name": "Bard",
+    "background_color": "#705d46",
+    "display": "standalone",
+    "start_url": "/pwa.html",
+    "icons": [
+        {
+        "src": "/image/bard.png",
+        "sizes": "192x192",
+        "type": "image/png"
+        }
+    ]
+}
