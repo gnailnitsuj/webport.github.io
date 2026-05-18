@@ -4,15 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> PWA </title>
+    <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="/manifest.json">
 </head>
-
-<title> PWA </title>
 
 <body>
     <a href="index.html"> Back to Portfolio </a>
     <h1> PWA </h1> <br>
-    
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/serviceWorker.js');
+        }
+
+    </script>
+
 </body>
 
 </html>
