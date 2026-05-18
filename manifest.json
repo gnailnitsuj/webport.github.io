@@ -3,7 +3,7 @@
     "short_name": "Bard",
     "background_color": "#705d46",
     "display": "standalone",
-    "start_url": "pwa.html",
+    "start_url": "./pwa.html",
     "icons": [
         {
         "src": "image/bard.png",
