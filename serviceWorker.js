@@ -1,7 +1,7 @@
 const cacheName = 'bard-pwa-v1';
 const assets = [
-    './pwa.html',
-    './style.css',
+    '/webport.github.io/pwa.html',
+    '/webport.github.io/style.css',
 ];
 
 self.addEventListener('install', async () => {
