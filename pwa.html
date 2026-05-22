@@ -6,17 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> PWA </title>
     <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="./manifest.json">
+    <link rel="manifest" href="/manifest.json">
 </head>
 
 <body>
-    <a href="index.html"> Back to Portfolio </a>
-    <h1> PWA </h1> <br>
+    <a href="index.html" style="text-align: left;"> Back to Portfolio </a>
+    <h1> Bard </h1> <br>
+    <img src="image/bard.png" width="200" height="200" style="padding-left: 45%;"> <hr>
+    <!-- Search Section (Only works online) -->
+    <div id="search-section">
+        <input type="text" id="search-input" placeholder="Search for songs..." style="font-family: 'Courier New', Courier, monospace;">
+        <button id="search-btn" style="font-family: 'Courier New', Courier, monospace;">Search</button>
+        <div id="search-results"></div>
+    </div>
+
+    <hr>
+
+    <!-- Offline Library Section (Always works) -->
+    <h2>Your Offline Library</h2>
+    <div id="offline-library">
+    </div>
+
+    <hr>
+
+    <!-- Audio Player -->
+    <div class="player-container" style="padding-left: 42%;">
+        <h3 id="now-playing">No Song Selected</h3>
+        <audio id="audio-player" controls></audio>
+    </div>
+    <script src="app.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./serviceWorker.js');
+            navigator.serviceWorker.register('/serviceWorker.js');
         }
-
     </script>
 
 </body>
