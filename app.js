@@ -17,7 +17,8 @@ request.onsuccess = (e) => {
 
 // Moved outside — no longer redefined on every search
 async function getRealAudioUrl(identifier) {
-    const res = await fetch(`https://archive.org/metadata/${identifier}`);
+    const metaUrl = `https://archive.org/metadata/${identifier}`;
+    const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(metaUrl)}`);
     const meta = await res.json();
     const audioFile = meta.files.find(f =>
         f.name.endsWith('.mp3') || f.name.endsWith('.ogg')
@@ -39,9 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
         searchResults.innerHTML = '<p>Searching for tracks...</p>';
 
         try {
-            const response = await fetch(
-                `https://archive.org/advancedsearch.php?q=${encodeURIComponent(query)}&mediatype=audio&fl[]=identifier,title,creator&output=json&rows=5`
-            );
+            const musicQuery = `${query} AND mediatype:audio AND subject:(music OR song OR album) AND NOT subject:(podcast OR audiobook OR "spoken word" OR radio OR interview)`;
+            const archiveUrl = `https://archive.org/advancedsearch.php?q=${encodeURIComponent(musicQuery)}&fl[]=identifier&fl[]=title&fl[]=creator&fl[]=downloads&fl[]=avg_rating&output=json&rows=10&sort[]=downloads+desc`;
+            const response = await fetch(`https://corsproxy.io/?${encodeURIComponent(archiveUrl)}`);
             const data = await response.json();
 
             searchResults.innerHTML = '';
@@ -68,13 +69,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 div.innerHTML = `
                     <span><strong>${song.title}</strong> - ${song.artist}</span>
                     <button class="play-btn" style="font-family: inherit; font-family: 'Courier New', Courier, monospace;">Play</button>
-                    <button id="dl-${song.id}" class="dl-btn">Download Offline</button>
+                    <button id="dl-${song.id}" class="dl-btn" style="font-family: inherit; font-family: 'Courier New', Courier, monospace;">Download Offline</button>
                 `;
 
                 div.querySelector('.play-btn').addEventListener('click', () => playSong(song.audioUrl, song.title));
                 div.querySelector('.dl-btn').addEventListener('click', () => downloadSong(song));
                 searchResults.appendChild(div);
-            } 
+            }
 
         } catch (error) {
             console.error("API Search Error:", error);
@@ -97,10 +98,10 @@ async function downloadSong(song) {
 
     try {
         const cache = await caches.open(AUDIO_CACHE);
-        
+
         // 1. Fetch normally without 'no-cors' so we get a valid response object
         const response = await fetch(song.audioUrl);
-        
+
         // Ensure the network request actually succeeded
         if (!response.ok) throw new Error('Network response was not ok');
 
