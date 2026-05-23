@@ -68,8 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 div.style.margin = "10px 0";
                 div.innerHTML = `
                     <span><strong>${song.title}</strong> - ${song.artist}</span>
-                    <button class="play-btn" style="font-family: inherit; font-family: 'Courier New', Courier, monospace;">Play</button>
-                    <button id="dl-${song.id}" class="dl-btn" style="font-family: inherit; font-family: 'Courier New', Courier, monospace;">Download Offline</button>
+                    <button class="play-btn" style="font-family: inherit; font-family: 'Courier New', Courier, monospace;">▶</button>
+                    <button id="dl-${song.id}" class="dl-btn" style="font-family: inherit; font-family: 'Courier New', Courier, monospace;">⭳</button>
                 `;
 
                 div.querySelector('.play-btn').addEventListener('click', () => playSong(song.audioUrl, song.title));
@@ -98,13 +98,17 @@ async function downloadSong(song) {
 
     try {
         const cache = await caches.open(AUDIO_CACHE);
-        
+
+        // 1. Fetch normally without 'no-cors' so we get a valid response object
         const response = await fetch(song.audioUrl);
-        
+
+        // Ensure the network request actually succeeded
         if (!response.ok) throw new Error('Network response was not ok');
-        
+
+        // 2. Explicitly store the request and resolved response into Cache Storage
         await cache.put(song.audioUrl, response);
 
+        // 3. Save the metadata to IndexedDB
         const transaction = db.transaction(['downloaded_songs'], 'readwrite');
         const store = transaction.objectStore('downloaded_songs');
         store.put(song);
@@ -118,6 +122,16 @@ async function downloadSong(song) {
         dlBtn.textContent = "Failed";
         dlBtn.disabled = false;
     }
+}
+
+async function removeSong(song) {
+
+    const transaction = db.transaction(['downloaded_songs'], 'readwrite');
+    transaction.objectStore('downloaded_songs').delete(song.id);
+    transaction.oncomplete = () => renderOfflineLibrary();
+
+    const cache = await caches.open(AUDIO_CACHE);
+    await cache.delete(song.audioUrl);
 }
 
 function renderOfflineLibrary() {
@@ -141,9 +155,12 @@ function renderOfflineLibrary() {
             div.style.margin = "5px 0";
             div.innerHTML = `
                 <span><strong>${song.title}</strong> - ${song.artist}</span>
-                <button class="play-offline-btn" style="font-family: inherit; font-family: 'Courier New', Courier, monospace;">Play Offline</button>
+                <button class="play-offline-btn" style="font-family: inherit; font-family: 'Courier New', Courier, monospace;">▶</button>
+                <button class="remove-btn" style="font-family: 'Courier New', Courier, monospace;">✕</button>
             `;
+            
             div.querySelector('.play-offline-btn').addEventListener('click', () => playSong(song.audioUrl, song.title));
+            div.querySelector('.remove-btn').addEventListener('click', () => removeSong(song));
             libraryDiv.appendChild(div);
         });
     };
