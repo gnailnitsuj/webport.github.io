@@ -1,8 +1,9 @@
 const cacheName = 'bard-pwa-v1';
+const AUDIO_CACHE = 'dynamic-audio-v1';
 const assets = [
     '/pwa.html',
     '/style.css',
-    '/app.js',
+    '/app.js',      
 ];
 
 self.addEventListener('install', async () => {
@@ -17,7 +18,9 @@ if (url.pathname.endsWith('.mp3') || url.pathname.endsWith('.ogg')) {
     }
 });
 async function cacheFirst(request) {
-    const cachedResponse = await caches.match(request);
-    return cachedResponse || fetch(request);
+    const cache = await caches.open(AUDIO_CACHE);
+    const cached = await cache.match(request, { ignoreSearch: true });
+    //const cachedResponse = await caches.match(request);
+    return cached || fetch(request);
 }
 
