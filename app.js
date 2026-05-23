@@ -15,7 +15,7 @@ request.onsuccess = (e) => {
     renderOfflineLibrary();
 };
 
-
+// Moved outside — no longer redefined on every search
 async function getRealAudioUrl(identifier) {
     const metaUrl = `https://archive.org/metadata/${identifier}`;
     const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(metaUrl)}`);
@@ -98,11 +98,11 @@ async function downloadSong(song) {
 
     try {
         const cache = await caches.open(AUDIO_CACHE);
-
+        
         const response = await fetch(song.audioUrl);
-
+        
         if (!response.ok) throw new Error('Network response was not ok');
-
+        
         await cache.put(song.audioUrl, response);
 
         const transaction = db.transaction(['downloaded_songs'], 'readwrite');
@@ -140,7 +140,7 @@ function renderOfflineLibrary() {
             div.className = 'offline-item';
             div.style.margin = "5px 0";
             div.innerHTML = `
-                <span><strong>${song.title}</strong> - ${song.artist} </span>
+                <span><strong>${song.title}</strong> - ${song.artist}</span>
                 <button class="play-offline-btn" style="font-family: inherit; font-family: 'Courier New', Courier, monospace;">Play Offline</button>
             `;
             div.querySelector('.play-offline-btn').addEventListener('click', () => playSong(song.audioUrl, song.title));
