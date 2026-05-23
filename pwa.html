@@ -13,7 +13,7 @@
 <body>
     <a href="index.html" style="text-align: left;"> Back to Portfolio </a>
     <h1> Bard </h1> <br>
-    <img src="image/bard.png" width="200" height="200" style="padding-left: 45%;"> <hr>
+    <img src="image/bard.png" width="200" height="200" style="padding-left: 42.5%;"> <p style="text-align: center;"> A Music Player PWA.</p> <br> <hr>
     <!-- Search Section (Only works online) -->
     <div id="search-section">
         <input type="text" id="search-input" placeholder="Search for songs..." style="font-family: 'Courier New', Courier, monospace;">
@@ -24,7 +24,7 @@
     <hr>
 
     <!-- Offline Library Section (Always works) -->
-    <h2>Your Offline Library</h2>
+    <h2><span style="background-color: cadetblue;">Offline Library</span></h2>
     <div id="offline-library">
     </div>
 
@@ -32,7 +32,7 @@
 
     <!-- Audio Player -->
     <div class="player-container">
-        <h3 id="now-playing">No Song Selected</h3>
+        <h3 id="now-playing"><span style="background-color: cadetblue;">No Song Selected</span></h3>
         <audio id="audio-player" controls></audio>
     </div>
     <script src="app.js"></script>
